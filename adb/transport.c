@@ -51,10 +51,10 @@ static void  dump_hex( const unsigned char*  ptr, size_t  len )
     if (len2 > MAX_DUMP_HEX_LEN) len2 = MAX_DUMP_HEX_LEN;
 
     for (nn = 0; nn < len2; nn++) {
-        sprintf(pb, "%02x", ptr[nn]);
+        snprintf(pb, sizeof buffer, "%02x", ptr[nn]);
         pb += 2;
     }
-    sprintf(pb++, " ");
+    snprintf(pb++, sizeof buffer, " ");
 
     for (nn = 0; nn < len2; nn++) {
         int  c = ptr[nn];

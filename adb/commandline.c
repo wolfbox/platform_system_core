@@ -458,7 +458,7 @@ int adb_download_buffer(const char *service, const char *fn, const void* data, i
     int fd;
     const unsigned char *ptr;
 
-    sprintf(buf,"%s:%d", service, sz);
+    snprintf(buf, sizeof buf, "%s:%d", service, sz);
     fd = adb_connect(buf);
     if(fd < 0) {
         fprintf(stderr,"error: %s\n", adb_error());
@@ -564,7 +564,7 @@ int adb_sideload_host(const char* fn) {
     }
 
     char buf[100];
-    sprintf(buf, "sideload-host:%d:%d", sz, SIDELOAD_HOST_BLOCK_SIZE);
+    snprintf(buf, sizeof buf, "sideload-host:%d:%d", sz, SIDELOAD_HOST_BLOCK_SIZE);
     int fd = adb_connect(buf);
     if (fd < 0) {
         // Try falling back to the older sideload method.  Maybe this

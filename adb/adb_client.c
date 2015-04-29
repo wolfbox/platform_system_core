@@ -152,7 +152,7 @@ int adb_status(int fd)
     }
 
     if(memcmp(buf, "FAIL", 4)) {
-        sprintf(__adb_error,
+        snprintf(__adb_error, sizeof __adb_error,
                 "protocol fault (status %02x %02x %02x %02x?!)",
                 buf[0], buf[1], buf[2], buf[3]);
         return -1;
