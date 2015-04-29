@@ -20,4 +20,10 @@
 #define __unused        __attribute__((__unused__))
 #endif
 
+#ifdef __OpenBSD__
+typedef off_t off64_t;
+#define lseek64 lseek
+#define ftruncate64 ftruncate
+#endif
+
 #endif /* _LIBSPARSE_DEFS_H_ */
