@@ -964,7 +964,7 @@ void start_logging(void)
     FILE*   flog;
 
     GetTempPath( sizeof(temp) - 8, temp );
-    strcat( temp, "adb.log" );
+    strlcat( temp, sizeof temp, "adb.log" );
 
     /* Win32 specific redirections */
     fnul = fopen( "NUL", "rt" );

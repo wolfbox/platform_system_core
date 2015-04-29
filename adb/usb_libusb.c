@@ -333,7 +333,7 @@ register_device(struct usb_handle *uh, const char *serial)
 
     usb = calloc(1, sizeof(struct usb_handle));
     memcpy(usb, uh, sizeof(struct usb_handle));
-    strcpy(usb->serial, uh->serial);
+    strlcpy(usb->serial, uh->serial, sizeof(usb->serial));
 
     adb_cond_init(&usb->notify, 0);
     adb_mutex_init(&usb->lock, 0);

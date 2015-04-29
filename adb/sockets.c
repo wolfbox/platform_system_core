@@ -597,7 +597,7 @@ void connect_to_remote(asocket *s, const char *destination)
     p->msg.command = A_OPEN;
     p->msg.arg0 = s->id;
     p->msg.data_length = len;
-    strcpy((char*) p->data, destination);
+    strlcpy((char*) p->data, destination, sizeof(p->data));
     send_packet(p, s->transport);
 }
 

@@ -47,8 +47,7 @@ void set_process_name(const char* new_name) {
 
     // We never free the old name. Someone else could be using it.
     int len = strlen(new_name);
-    char* copy = (char*) malloc(len + 1);
-    strcpy(copy, new_name);
+    char* copy = strdup(new_name);
     process_name = (const char*) copy;
 
 #if defined(HAVE_PRCTL)

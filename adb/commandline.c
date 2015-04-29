@@ -872,7 +872,8 @@ static int mkdirs(const char *path)
 static int backup(int argc, char** argv) {
     char buf[4096];
     char default_name[32];
-    const char* filename = strcpy(default_name, "./backup.ab");
+    strlcpy(default_name, "./backup.ab", sizeof(default_name));
+    const char* filename = default_name;
     int fd, outFd;
     int i, j;
 
@@ -967,7 +968,7 @@ static int top_works(const char *top)
 
 static char *find_top_from(const char *indir, char path_buf[PATH_MAX])
 {
-    strcpy(path_buf, indir);
+    strlcpy(path_buf, indir, sizeof(path_buf));
     while (1) {
         if (top_works(path_buf)) {
             return path_buf;
@@ -1005,7 +1006,7 @@ static char *find_top(char path_buf[PATH_MAX])
     if (top != NULL) {
         /* The environment pointed to a top directory that works.
          */
-        strcpy(path_buf, top);
+        strlcpy(path_buf, top, sizeof(path_buf));
         return path_buf;
     }
 
@@ -1047,7 +1048,7 @@ static const char *find_product_out_path(const char *hint)
     /* If it's already absolute, don't bother doing any work.
      */
     if (adb_is_absolute_host_path(hint)) {
-        strcpy(path_buf, hint);
+        strlcpy(path_buf, hint, sizeof(path_buf));
         return path_buf;
     }
 
@@ -1063,8 +1064,8 @@ static const char *find_product_out_path(const char *hint)
             fprintf(stderr, "adb: Couldn't assemble path\n");
             return NULL;
         }
-        strcat(path_buf, OS_PATH_SEPARATOR_STR);
-        strcat(path_buf, hint);
+        strlcat(path_buf, OS_PATH_SEPARATOR_STR, sizeof path_buf);
+        strlcat(path_buf, hint, sizeof path_buf);
         return path_buf;
     }
 

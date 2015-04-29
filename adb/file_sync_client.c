@@ -388,7 +388,7 @@ static int sync_send(int fd, const char *lpath, const char *rpath,
             }
             sbuf->data[len] = 0;
         } else
-            strcpy(sbuf->data, "unknown reason");
+            strlcpy(sbuf->data, "unknown reason", sizeof(sbuf->data));
 
         fprintf(stderr,"failed to copy '%s' to '%s': %s\n", lpath, rpath, sbuf->data);
         return -1;
@@ -529,7 +529,7 @@ remote_error:
     } else {
         memcpy(buffer, &id, 4);
         buffer[4] = 0;
-//        strcpy(buffer,"unknown reason");
+//        strlcpy(buffer,"unknown reason", sizeof(send_buffer.data));
     }
     fprintf(stderr,"failed to copy '%s' to '%s': %s\n", rpath, lpath, buffer);
     return 0;
@@ -638,8 +638,8 @@ static int local_build_list(copyinfo **filelist,
          */
         if (strlen(lpath) + strlen(de->d_name) + 1 > sizeof(stat_path))
             continue;
-        strcpy(stat_path, lpath);
-        strcat(stat_path, de->d_name);
+        strlcpy(stat_path, lpath, sizeof stat_path);
+        strlcat(stat_path, de->d_name, sizeof stat_path);
 
         if(!lstat(stat_path, &st)) {
             if (S_ISDIR(st.st_mode)) {

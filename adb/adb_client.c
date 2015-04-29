@@ -122,7 +122,7 @@ static int switch_socket_transport(int fd)
     snprintf(tmp, sizeof tmp, "%04x", len);
 
     if(writex(fd, tmp, 4) || writex(fd, service, len)) {
-        strcpy(__adb_error, "write failure during connection");
+        strlcpy(__adb_error, "write failure during connection", sizeof(__adb_error));
         adb_close(fd);
         return -1;
     }
@@ -143,7 +143,7 @@ int adb_status(int fd)
     unsigned len;
 
     if(readx(fd, buf, 4)) {
-        strcpy(__adb_error, "protocol fault (no status)");
+        strlcpy(__adb_error, "protocol fault (no status)", sizeof(__adb_error));
         return -1;
     }
 
@@ -159,14 +159,14 @@ int adb_status(int fd)
     }
 
     if(readx(fd, buf, 4)) {
-        strcpy(__adb_error, "protocol fault (status len)");
+        strlcpy(__adb_error, "protocol fault (status len)", sizeof(__adb_error));
         return -1;
     }
     buf[4] = 0;
     len = strtoul((char*)buf, 0, 16);
     if(len > 255) len = 255;
     if(readx(fd, __adb_error, len)) {
-        strcpy(__adb_error, "protocol fault (status read)");
+        strlcpy(__adb_error, "protocol fault (status read)", sizeof(__adb_error));
         return -1;
     }
     __adb_error[len] = 0;
@@ -182,7 +182,7 @@ int _adb_connect(const char *service)
     D("_adb_connect: %s\n", service);
     len = strlen(service);
     if((len < 1) || (len > 1024)) {
-        strcpy(__adb_error, "service name too long");
+        strlcpy(__adb_error, "service name too long", sizeof(__adb_error));
         return -1;
     }
     snprintf(tmp, sizeof tmp, "%04x", len);
@@ -193,7 +193,7 @@ int _adb_connect(const char *service)
         fd = socket_loopback_client(__adb_server_port, SOCK_STREAM);
 
     if(fd < 0) {
-        strcpy(__adb_error, "cannot connect to daemon");
+        strlcpy(__adb_error, "cannot connect to daemon", sizeof(__adb_error));
         return -2;
     }
 
@@ -202,7 +202,7 @@ int _adb_connect(const char *service)
     }
 
     if(writex(fd, tmp, 4) || writex(fd, service, len)) {
-        strcpy(__adb_error, "write failure during connection");
+        strlcpy(__adb_error, "write failure during connection", sizeof(__adb_error));
         adb_close(fd);
         return -1;
     }
@@ -326,7 +326,7 @@ char *adb_query(const char *service)
     buf[4] = 0;
     n = strtoul(buf, 0, 16);
     if(n >= 0xffff) {
-        strcpy(__adb_error, "reply is too long (>= 64kB)");
+        strlcpy(__adb_error, "reply is too long (>= 64kB)", sizeof(__adb_error));
         goto oops;
     }
 

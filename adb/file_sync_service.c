@@ -128,7 +128,7 @@ static int do_list(int s, const char *path)
                if it does happen, let's not buffer overrun */
         if(len > 256) continue;
 
-        strcpy(fname, de->d_name);
+        strlcpy(fname, de->d_name);
         if(lstat(tmp, &st) == 0) {
             msg.dent.mode = htoll(st.st_mode);
             msg.dent.size = htoll(st.st_size);

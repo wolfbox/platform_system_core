@@ -126,7 +126,7 @@ static void get_user_info(char *buf, size_t len)
         ret = gethostname(hostname, sizeof(hostname));
 #endif
     if (ret < 0)
-        strcpy(hostname, "unknown");
+        strlcpy(hostname, "unknown", sizeof(hostname));
 
     ret = -1;
 
@@ -141,7 +141,7 @@ static void get_user_info(char *buf, size_t len)
         ret = getlogin_r(username, sizeof(username));
 #endif
     if (ret < 0)
-        strcpy(username, "unknown");
+        strlcpy(username, "unknown", sizeof(username));
 
     ret = snprintf(buf, len, " %s@%s", username, hostname);
     if (ret >= (signed)len)
@@ -408,7 +408,7 @@ int adb_auth_get_userkey(unsigned char *data, size_t len)
         D("Error getting user key filename");
         return 0;
     }
-    strcat(path, ".pub");
+    strlcat(path, ".pub", sizeof path);
 
     file = load_file(path, (unsigned*)&ret);
     if (!file) {

@@ -146,7 +146,8 @@ static int recurse(HashAlgorithm algorithm, const char *directory_path,
             continue;
         }
 
-        char *name = malloc(strlen(de->d_name) + 1);
+        const size_t name_len = strlen(de->d_name) + 1;
+        char *name = malloc(name_len);
         struct list *node = malloc(sizeof(struct list));
 
         if (name == NULL || node == NULL) {
@@ -163,7 +164,7 @@ static int recurse(HashAlgorithm algorithm, const char *directory_path,
             return -1;
         }
 
-        strcpy(name, de->d_name);
+        strlcpy(name, de->d_name, name_len);
 
         node->name = name;
         node->next = list;
@@ -316,7 +317,8 @@ int get_recursive_hash_manifest(HashAlgorithm algorithm,
     for (i = 0; i < count; i++) {
         int n = strlen(list[i]->name);
 
-        strcpy(buf + retlen, list[i]->name);
+	const size_t remaining_buf_len = (len + 1) - retlen);
+        strlcpy(buf + retlen, list[i]->name, remaining_buf_len);
         retlen += n;
     }
 
