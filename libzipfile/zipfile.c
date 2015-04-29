@@ -102,8 +102,8 @@ uninflate(unsigned char* out, int unlen, const unsigned char* in, int clen)
     // uncompress the data
     zerr = inflate(&zstream, Z_FINISH);
     if (zerr != Z_STREAM_END) {
-        fprintf(stderr, "zerr=%d Z_STREAM_END=%d total_out=%lu\n", zerr, Z_STREAM_END,
-                    zstream.total_out);
+        fprintf(stderr, "zerr=%d Z_STREAM_END=%d total_out=%ju\n", zerr, Z_STREAM_END,
+                    (uintmax_t)zstream.total_out);
         err = -1;
     }
 

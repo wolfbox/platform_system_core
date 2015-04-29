@@ -246,8 +246,8 @@ void usb_kick(struct usb_handle *h)
 }
 
 int
-check_usb_interface(struct libusb_interface *interface,
-                    struct libusb_device_descriptor *desc,
+check_usb_interface(struct libusb_interface const *interface,
+                    struct libusb_device_descriptor const *desc,
                     struct usb_handle *uh)
 {    
     int e;
@@ -257,7 +257,7 @@ check_usb_interface(struct libusb_interface *interface,
         return -1;
     }
     
-    struct libusb_interface_descriptor *idesc = &interface->altsetting[0];
+    struct libusb_interface_descriptor const *idesc = &interface->altsetting[0];
     
     if (idesc->bNumEndpoints != 2) {
         D("check_usb_interface(): Interface have not 2 endpoints, ignoring\n");
@@ -265,7 +265,7 @@ check_usb_interface(struct libusb_interface *interface,
     }
 
     for (e = 0; e < idesc->bNumEndpoints; e++) {
-        struct libusb_endpoint_descriptor *edesc = &idesc->endpoint[e];
+        struct libusb_endpoint_descriptor const *edesc = &idesc->endpoint[e];
         
         if (edesc->bmAttributes != LIBUSB_TRANSFER_TYPE_BULK) {
             D("check_usb_interface(): Endpoint (%u) is not bulk (%u), ignoring\n",
@@ -305,7 +305,8 @@ check_usb_interface(struct libusb_interface *interface,
 
 int
 check_usb_interfaces(struct libusb_config_descriptor *config,
-                     struct libusb_device_descriptor *desc, struct usb_handle *uh)
+                     struct libusb_device_descriptor *desc,
+                     struct usb_handle *uh)
 {  
     int i;
     
@@ -586,7 +587,7 @@ scan_usb_devices()
     ssize_t cnt = libusb_get_device_list(ctx, &devs);
 
     if (cnt < 0) {
-        D("scan_usb_devices(): Failed to get device list (error: %d)\n",
+        D("scan_usb_devices(): Failed to get device list (error: %zu)\n",
             cnt);
 
         return;
