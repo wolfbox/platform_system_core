@@ -40,6 +40,7 @@
 
 #include <libusb.h>
 
+#include "fastboot.h"
 #include "usb.h"
 
 /* Timeout in seconds for usb_wait_for_disconnect.
@@ -64,20 +65,21 @@ probe(struct usb_handle *h, ifc_match_func callback)
     struct libusb_config_descriptor *pcfg;
     int i, j;
 
-    if (libusb_open(h->dev, &h->handle) < 0)
-        return (-1);
-
     if (libusb_get_device_descriptor(h->dev, &ddesc) < 0) {
-        libusb_close(h->handle);
         return (-1);
     }
-    memset(&info, 0, sizeof(info));
 
+    if (libusb_open(h->dev, &h->handle) < 0) {
+        return (-1);
+    }
+
+    memset(&info, 0, sizeof(info));
     info.dev_vendor = ddesc.idVendor;
     info.dev_product = ddesc.idProduct;
     info.dev_class = ddesc.bDeviceClass;
     info.dev_subclass = ddesc.bDeviceSubClass;
     info.dev_protocol = ddesc.bDeviceProtocol;
+    info.writable = 1;
 
     if (ddesc.iSerialNumber != 0) {
         libusb_get_string_descriptor_ascii(h->handle, ddesc.iSerialNumber,
@@ -145,12 +147,12 @@ enumerate(ifc_match_func callback)
     if (h == NULL)
         return (h);
 
-    if (ctx == NULL)
+    if (ctx == NULL) {
         libusb_init(&ctx);
+    }
 
     ndev = libusb_get_device_list(ctx, &ppdev);
     for (x = 0; x < ndev; x++) {
-
         memset(h, 0, sizeof(*h));
 
         h->dev = ppdev[x];
