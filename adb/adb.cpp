@@ -715,7 +715,7 @@ int launch_server(int server_port)
         char str_port[30];
         snprintf(str_port, sizeof(str_port), "%d",  server_port);
         // child process
-        int result = execl(path, "adb", "-P", str_port, "fork-server", "server", NULL);
+        int result = execlp(path, "adb", "-P", str_port, "fork-server", "server", NULL);
         // this should not return
         fprintf(stderr, "OOPS! execl returned %d, errno: %d\n", result, errno);
     } else  {
@@ -787,7 +787,7 @@ int handle_forward_request(const char* service, transport_type ttype, char* seri
         int createForward = strncmp(service, "kill", 4);
         int no_rebind = 0;
 
-        local = strchr(service, ':') + 1;
+        local = (char*)strchr(service, ':') + 1;
 
         // Handle forward:norebind:<local>... here
         if (createForward && !strncmp(local, "norebind:", 9)) {

@@ -255,6 +255,7 @@ void fatal_errno(const char *fmt, ...);
 
 void handle_packet(apacket *p, atransport *t);
 
+void init_my_path(const char* path);
 void get_my_path(char *s, size_t maxLen);
 int launch_server(int server_port);
 int adb_main(int is_daemon, int server_port);

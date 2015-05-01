@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 The Android Open Source Project
+ * Copyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-#import <Carbon/Carbon.h>
+#include <string.h>
 #include <unistd.h>
 
-#include "adb.h"
+static char const* exe_buf;
 
-void init_my_path(const char* exe) {}
-
-void get_my_path(char *s, size_t maxLen)
+void init_my_path(const char* exe)
 {
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef executableURL = CFBundleCopyExecutableURL(mainBundle);
-    CFStringRef executablePathString = CFURLCopyFileSystemPath(executableURL, kCFURLPOSIXPathStyle);
-    CFRelease(executableURL);
+    exe_buf = exe;
+}
 
-    CFStringGetFileSystemRepresentation(executablePathString, s, maxLen);
-    CFRelease(executablePathString);
+void get_my_path(char *exe, size_t maxLen)
+{
+    if(exe_buf == NULL) {
+        exe[0] = '\0';
+        return;
+    }
+
+    strlcpy(exe, exe_buf, maxLen);
 }
 

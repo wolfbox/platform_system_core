@@ -375,6 +375,7 @@ int main(int argc, char **argv) {
     close_stdin();
 #endif
     adb_trace_init();
+    init_my_path(argv[0]);
 
 #if ADB_HOST
     D("Handling commandline()\n");

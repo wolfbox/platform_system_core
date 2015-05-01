@@ -22,6 +22,7 @@
 #include <sys/types.h>
 
 #include <string>
+#include <string.h>
 
 #include "base/macros.h"  // For TEMP_FAILURE_RETRY on Darwin.
 #define LOG_TAG "base.file"

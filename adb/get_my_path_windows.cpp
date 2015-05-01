@@ -20,6 +20,8 @@
 
 #include "adb.h"
 
+void init_my_path(const char* exe) {}
+
 void get_my_path(char *exe, size_t maxLen)
 {
     char  *r;
