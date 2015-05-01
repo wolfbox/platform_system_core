@@ -17,6 +17,8 @@
 #import <Carbon/Carbon.h>
 #include <unistd.h>
 
+void init_my_path(const char* path) {}
+
 void get_my_path(char *s, size_t maxLen)
 {
     CFBundleRef mainBundle = CFBundleGetMainBundle();

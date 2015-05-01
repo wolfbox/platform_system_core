@@ -1687,9 +1687,7 @@ int handle_host_request(char *service, transport_type ttype, char* serial, int r
 
 int main(int argc, char **argv)
 {
-#ifdef __OpenBSD__
     init_my_path(argv[0]);
-#endif
 
 #if ADB_HOST
     adb_sysdeps_init();
