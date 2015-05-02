@@ -834,15 +834,15 @@ static int logcat(transport_type transport, char* serial, int argc, char **argv)
     free(quoted);
 
     if (!strcmp(argv[0], "longcat")) {
-        strncat(buf, " -v long", sizeof(buf) - 1);
+        strlcat(buf, " -v long", sizeof(buf));
     }
 
     argc -= 1;
     argv += 1;
     while(argc-- > 0) {
         quoted = escape_arg(*argv++);
-        strncat(buf, " ", sizeof(buf) - 1);
-        strncat(buf, quoted, sizeof(buf) - 1);
+        strlcat(buf, " ", sizeof(buf));
+        strlcat(buf, quoted, sizeof(buf));
         free(quoted);
     }
 
@@ -906,8 +906,8 @@ static int backup(int argc, char** argv) {
 
     snprintf(buf, sizeof(buf), "backup");
     for (argc--, argv++; argc; argc--, argv++) {
-        strncat(buf, ":", sizeof(buf) - strlen(buf) - 1);
-        strncat(buf, argv[0], sizeof(buf) - strlen(buf) - 1);
+        strlcat(buf, ":", sizeof(buf));
+        strlcat(buf, argv[0], sizeof(buf));
     }
 
     D("backup. filename=%s buf=%s\n", filename, buf);
@@ -1356,8 +1356,8 @@ top:
         argv += 2;
         while (argc-- > 0) {
             char *quoted = escape_arg(*argv++);
-            strncat(buf, " ", sizeof(buf) - 1);
-            strncat(buf, quoted, sizeof(buf) - 1);
+            strlcat(buf, " ", sizeof(buf));
+            strlcat(buf, quoted, sizeof(buf));
             free(quoted);
         }
 
@@ -1399,8 +1399,8 @@ top:
         argv += 2;
         while (argc-- > 0) {
             char *quoted = escape_arg(*argv++);
-            strncat(buf, " ", sizeof(buf) - 1);
-            strncat(buf, quoted, sizeof(buf) - 1);
+            strlcat(buf, " ", sizeof(buf));
+            strlcat(buf, quoted, sizeof(buf));
             free(quoted);
         }
 
@@ -1849,8 +1849,8 @@ static int pm_command(transport_type transport, char* serial,
 
     while(argc-- > 0) {
         char *quoted = escape_arg(*argv++);
-        strncat(buf, " ", sizeof(buf) - 1);
-        strncat(buf, quoted, sizeof(buf) - 1);
+        strlcat(buf, " ", sizeof(buf));
+        strlcat(buf, quoted, sizeof(buf));
         free(quoted);
     }
 
@@ -1883,7 +1883,7 @@ static int delete_file(transport_type transport, char* serial, char* filename)
 
     snprintf(buf, sizeof(buf), "shell:rm -f ");
     quoted = escape_arg(filename);
-    strncat(buf, quoted, sizeof(buf)-1);
+    strlcat(buf, quoted, sizeof(buf));
     free(quoted);
 
     send_shellcommand(transport, serial, buf);
@@ -1988,8 +1988,8 @@ int install_multiple_app(transport_type transport, char* serial, int argc, char*
     snprintf(buf, sizeof(buf), "exec:pm install-create -S %lld", total_size);
     for (i = 1; i < first_apk; i++) {
         char *quoted = escape_arg(argv[i]);
-        strncat(buf, " ", sizeof(buf) - 1);
-        strncat(buf, quoted, sizeof(buf) - 1);
+        strlcat(buf, " ", sizeof(buf));
+        strlcat(buf, quoted, sizeof(buf));
         free(quoted);
     }
 
