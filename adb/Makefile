@@ -32,6 +32,7 @@ ifeq (Linux,$(HOST_OS))
     SRCS += get_my_path_linux.c
 else ifeq (Darwin,$(HOST_OS))
     SRCS += get_my_path_darwin.c
+    LIBS += -framework CoreFoundation
 else
     SRCS += get_my_path_generic.c
 endif
