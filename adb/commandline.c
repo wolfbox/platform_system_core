@@ -968,7 +968,7 @@ static int top_works(const char *top)
 
 static char *find_top_from(const char *indir, char path_buf[PATH_MAX])
 {
-    strlcpy(path_buf, indir, sizeof(path_buf));
+    strlcpy(path_buf, indir, PATH_MAX);
     while (1) {
         if (top_works(path_buf)) {
             return path_buf;
@@ -1006,7 +1006,7 @@ static char *find_top(char path_buf[PATH_MAX])
     if (top != NULL) {
         /* The environment pointed to a top directory that works.
          */
-        strlcpy(path_buf, top, sizeof(path_buf));
+        strlcpy(path_buf, top, PATH_MAX);
         return path_buf;
     }
 

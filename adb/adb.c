@@ -197,6 +197,8 @@ void adb_qemu_trace(const char* fmt, ...)
         vsnprintf(msg, sizeof(msg), fmt, args);
         adb_write(adb_debug_qemu, msg, strlen(msg));
     }
+
+    va_end(args);
 }
 #endif  /* !ADB_HOST */
 

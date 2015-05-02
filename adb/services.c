@@ -515,7 +515,7 @@ static void connect_device(char* host, char* buffer, int buffer_size)
     char serial[100];
     int ret;
 
-    strncpy(hostbuf, host, sizeof(hostbuf) - 1);
+    strlcpy(hostbuf, host, sizeof(hostbuf) - 1);
     if (portstr) {
         if (portstr - host >= (ptrdiff_t)sizeof(hostbuf)) {
             snprintf(buffer, buffer_size, "bad host name %s", host);
