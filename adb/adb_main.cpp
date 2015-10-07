@@ -361,6 +361,8 @@ void close_stdin() {
 
 // TODO(danalbert): Split this file up into adb_main.cpp and adbd_main.cpp.
 int main(int argc, char **argv) {
+    init_my_path(argv[0]);
+
 #if ADB_HOST
     // adb client/server
     adb_sysdeps_init();
